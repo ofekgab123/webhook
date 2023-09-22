@@ -5,11 +5,11 @@ import requests
 app = Flask(__name__)
 
 def sendMess():
-    url = 'https://api.maytapi.com/api/1045bb20-ca7d-469d-8f4b-0a98280b8b6e/32658/sendMessage'
+    url = 'https://api.maytapi.com/api/1ece67a7-b614-442e-9fe7-5a7db00ffc09/32888/sendMessage'
     payload = {"to_number": "+972524715180",
             "type": "text",
              "message": "מה המצב?"}
-    headers = {'Content-Type': 'application/json', "x-maytapi-key":"dd07d638-2cf6-4dda-adc5-f011b23e4065"}
+    headers = {'Content-Type': 'application/json', "x-maytapi-key":"6f161e3b-35ea-4df3-8ff6-656da380a8f0"}
     response = requests.post(url, data=json.dumps(payload), headers=headers)   
     if response.status_code == 200:
         print('POST Request with JSON payload was successful')
