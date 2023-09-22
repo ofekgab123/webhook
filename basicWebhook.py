@@ -21,7 +21,7 @@ def sendMess():
 @app.route('/webhook', methods=['POST'])
 def webhook():
     if request.headers['Content-Type'] != 'application/json':
-        return jsonify({"error": "Unsupported Media Type"}), 415
+        return jsonify({"error": "dont have json header"}), 415
 
     try:
 
