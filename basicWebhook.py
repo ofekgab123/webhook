@@ -26,7 +26,8 @@ def webhook():
     try:
 
         payload = request.get_json()
-        
+        user = payload.get('payload', {}).get('user', {})
+        phone = user.get('phone')
     except Exception as e:
         print(e)
         return jsonify({"error": "Invalid JSON"}), 400
@@ -34,7 +35,7 @@ def webhook():
 
     response = {
         "message": "Success",
-        "payload": payload.user
+        "payload": phone
     }
 
     return jsonify(response), 200
