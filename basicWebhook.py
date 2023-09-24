@@ -31,7 +31,7 @@ def webhook():
         print(e)
         return jsonify({"error": "Invalid JSON"}), 400
 
-    sendMess()
+
     response = {
         "message": "Success",
         "payload": payload
