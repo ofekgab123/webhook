@@ -34,7 +34,7 @@ def webhook():
 
     response = {
         "message": "Success",
-        "payload": payload
+        "payload": payload.user
     }
 
     return jsonify(response), 200
