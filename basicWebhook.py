@@ -4,9 +4,9 @@ import requests
 
 app = Flask(__name__)
 
-def sendMess():
+def sendMess(phone):
     url = 'https://api.maytapi.com/api/1ece67a7-b614-442e-9fe7-5a7db00ffc09/32888/sendMessage'
-    payload = {"to_number": "+972524715180",
+    payload = {"to_number": phone,
             "type": "text",
              "message": "מה המצב?"}
     headers = {'Content-Type': 'application/json', "x-maytapi-key":"6f161e3b-35ea-4df3-8ff6-656da380a8f0"}
@@ -26,18 +26,18 @@ def webhook():
     try:
 
         payload = request.get_json()
-        user = payload.get('payload', {}).get('user', {})
+        user = payload.get('user', {})
         phone = user.get('phone')
     except Exception as e:
         print(e)
         return jsonify({"error": "Invalid JSON"}), 400
 
+    sendMess(phone)
 
     response = {
         "message": "Success",
         "payload": phone
     }
-
     return jsonify(response), 200
 
 @app.route('/ping', methods=['GET'])
