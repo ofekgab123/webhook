@@ -40,7 +40,7 @@ def webhook():
     return jsonify(response), 200
 
 @app.route('/ping', methods=['GET'])
-def webhook():
+def ping():
     return "pong", 200
 
 if __name__ == '__main__':
