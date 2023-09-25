@@ -1,0 +1,29 @@
+name: CI
+on: [workflow_dispatch]
+jobs:
+  BUILDxPUSH:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      # ---
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      # ---
+      - name: Login
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        uses: par-tec/docker-push-gar-image@v0.0.3
+        with:
+          image_name: webhook
+          image_tag: "0.0.8"
+          docker_context: ./
+          gar_hostname: me-west1-docker.pkg.dev
+          gar_project: ${{ secrets.GCLOUD_PROJECT_ID }}
+          gar_service_account: ${{ secrets.GCLOUD_SERVICE_KEY }}
+          tag_latest_version: true
+      # ---
+      - run: echo "🍏 This job's status is ${{ job.status }}."
