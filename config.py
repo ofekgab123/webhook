@@ -3,7 +3,7 @@ import sys
 from dotenv import load_dotenv, find_dotenv
 from loguru import logger
 
-def __Init_settings() -> dict:
+def __init_Settings() -> dict:
     config = {}
     env = load_dotenv(find_dotenv())
     if env == False:
@@ -26,4 +26,4 @@ def __Init_settings() -> dict:
             
     return config
 
-settings=__Init_settings()
+settings=__init_Settings()
