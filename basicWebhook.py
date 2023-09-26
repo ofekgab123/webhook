@@ -12,7 +12,7 @@ from config import settings
 
 app = FastAPI()
 app.include_router(pingRoute)
-url = settings.get("MAYTAPI_URL")
+MAYTAPI_URL = settings.get("MAYTAPI_URL")
 MAYTAPI_KEY = settings.get("MAYTAPI_KEY")
 
 def StartSession(phone):
