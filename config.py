@@ -22,7 +22,6 @@ def __init_Settings() -> dict:
         sys.exit(1)
     else:
         config.update({"MAYTAPI_URL":MAYTAPI_URL})
-        print("load vars")
             
     return config
 
