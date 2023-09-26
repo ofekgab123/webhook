@@ -25,7 +25,7 @@ def sendMsg(phone):
         "Content-Type": "application/json", 
         "x-maytapi-key": settings.get("MAYTAPI_KEY")
     }
-    response = requests.post(url, data=json.dumps(payload), headers=headers)   
+    response = requests.post(url, data=json.dumps(payload), headers=headers,timeout=20)
     if response.status_code == 200:
         logger.info('POST Request with JSON payload was successful')
         logger.debug('Response:', response.text)
@@ -36,7 +36,7 @@ def sendMsg(phone):
 @app.post('/webhook')
 async def webhook(  request: Request,
                     content_type: Annotated[str | None, Header()] = None):
-    
+   
     if content_type != 'application/json':
         
         response = {
@@ -54,7 +54,7 @@ async def webhook(  request: Request,
         user = payload.get('user', {})
         phone = user.get('phone')
         
-    except :
+    except:
         response = {
             "msg": "Bad request: Invalid JSON",
             "status": 400
