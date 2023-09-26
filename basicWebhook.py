@@ -35,7 +35,7 @@ def StartSession(phone):
             "text":"אם לא הצלחתי לעזור לך ואת מעוניינת לדבר עם מיכל ",
         }
     ]
-    payload = {"to_number": phone, "type": "text", "message": openmsg,"buttons": buttons}
+    payload = {"to_number": phone, "type": "buttons", "message": openmsg,"buttons": buttons}
     headers = {
         "Content-Type": "application/json",
         "x-maytapi-key": MAYTAPI_KEY,
