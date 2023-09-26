@@ -12,23 +12,44 @@ from config import settings
 
 app = FastAPI()
 app.include_router(pingRoute)
+url = settings.get("MAYTAPI_URL")
+MAYTAPI_KEY = settings.get("MAYTAPI_KEY")
 
-
-def sendMsg(phone):
-    url = settings.get("MAYTAPI_URL")
-    payload = {"to_number": phone, "type": "text", "message": "מה המצב?"}
+def StartSession(phone):
+    openmsg = "שלום זאת העוזרת הטכנלוגית של מיכל כהן אשמח לעזור לך במה שתצטרכי"
+    buttons = [
+        {
+            "id": "AnswerOpenMsg1",
+            "text":"לעולם הלייזר",
+        },
+        {
+            "id": "AnswerOpenMsg2",
+            "text":"לעולמות הקוסמטיקה",
+        },
+        {
+            "id": "AnswerOpenMsg3",
+            "text":"למוצרים שלנו",
+        },
+        {
+            "id": "AnswerOpenMsg4",
+            "text":"אם לא הצלחתי לעזור לך ואת מעוניינת לדבר עם מיכל ",
+        }
+    ]
+    payload = {"to_number": phone, "type": "text", "message": openmsg,"buttons": buttons}
     headers = {
         "Content-Type": "application/json",
-        "x-maytapi-key": settings.get("MAYTAPI_KEY"),
+        "x-maytapi-key": MAYTAPI_KEY,
     }
     response = requests.post(url, data=json.dumps(payload), headers=headers, timeout=20)
     if response.status_code == 200:
         logger.info("POST Request with JSON payload was successful")
         logger.debug("Response:", response.text)
+        print(response.text)
     else:
         logger.error(
             "POST Request with JSON payload failed with status code:",
             response.status_code,
+            print(response.status_code),
         )
 
 
@@ -54,7 +75,7 @@ async def webhook(
         logger.error(response.get("msg"))
         return JSONResponse(status_code=400, content=response)
 
-    sendMsg(phone)
+    StartSession(phone)
 
     response = {"msg": "Success", "payload": phone, "status": 200}
     return JSONResponse(status_code=200, content=response)
