@@ -50,23 +50,22 @@ def StartSession(phone):
         response = requests.post(
             MAYTAPI_URL, data=json.dumps(payload), headers=headers, timeout=200
         )
+        if response.status_code == 200:
+            logger.info("POST Request with JSON payload was successful")
+            logger.debug("Response:", response.text)
+            print(response.text)
+        else:
+            logger.error(
+                "POST Request with JSON payload failed with status code:",
+                response.status_code,
+                print(response.status_code),
+            )
     except requests.Timeout:
         logger.error("POST Request timeout after 200 seconds")
         return JSONResponse(status_code=500, content="POST Request timeout after 200 seconds")
     except requests.ConnectionError:
         logger.error("POST Request connection error")
         return JSONResponse(status_code=500, content="POST Request connection error")
-    if response.status_code == 200:
-        logger.info("POST Request with JSON payload was successful")
-        logger.debug("Response:", response.text)
-        print(response.text)
-    else:
-        logger.error(
-            "POST Request with JSON payload failed with status code:",
-            response.status_code,
-            print(response.status_code),
-        )
-
 
 @app.post("/webhook")
 async def webhook(
