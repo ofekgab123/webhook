@@ -52,10 +52,10 @@ def StartSession(phone):
         )
     except requests.Timeout:
         logger.error("POST Request timeout after 200 seconds")
-        return
+        return JSONResponse(status_code=500, content="POST Request timeout after 200 seconds")
     except requests.ConnectionError:
         logger.error("POST Request connection error")
-        return
+        return JSONResponse(status_code=500, content="POST Request connection error")
     if response.status_code == 200:
         logger.info("POST Request with JSON payload was successful")
         logger.debug("Response:", response.text)
@@ -92,7 +92,7 @@ async def webhook(
 
     StartSession(phone)
 
-    logger.debug("payload: ", phone)
+    logger.debug("payload phone: ", phone)
 
     response = {"msg": "Success", "status": 200}
     return JSONResponse(status_code=200, content=response)
@@ -100,5 +100,5 @@ async def webhook(
 
 if __name__ == "__main__":
     uvicorn.run(
-        "basicWebhook:app", host="0.0.0.0", port=5000, log_level="info", reload=True
+        "basicWebhook:app", host="0.0.0.0", port=5000, log_level="debug"
     )
