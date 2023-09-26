@@ -40,7 +40,16 @@ def StartSession(phone):
         "Content-Type": "application/json",
         "x-maytapi-key": MAYTAPI_KEY,
     }
-    response = requests.post(url, data=json.dumps(payload), headers=headers, timeout=20)
+    try:
+        response = requests.post(
+            url, data=json.dumps(payload), headers=headers, timeout=30
+        )
+    except requests.Timeout:
+        logger.error("POST Request timeout after 30 seconds")
+        return
+    except requests.ConnectionError:
+        logger.error("POST Request connection error")
+        return
     if response.status_code == 200:
         logger.info("POST Request with JSON payload was successful")
         logger.debug("Response:", response.text)
@@ -77,7 +86,9 @@ async def webhook(
 
     StartSession(phone)
 
-    response = {"msg": "Success", "payload": phone, "status": 200}
+    logger.debug("payload: ", phone)
+
+    response = {"msg": "Success", "status": 200}
     return JSONResponse(status_code=200, content=response)
 
 
