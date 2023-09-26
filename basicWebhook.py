@@ -5,27 +5,17 @@ from fastapi.responses import JSONResponse
 from loguru import logger
 import uvicorn
 import requests
+
 from ping import pingRoute
-import os
-from dotenv import load_dotenv, find_dotenv
+from config import settings
+
 
 app = FastAPI()
 app.include_router(pingRoute)
-
  
-env = load_dotenv(find_dotenv())
-if env == False:
-    logger.warning("Could not find .env file")
-
-MAYTAPI_KEY = os.environ.get("MAYTAPI_KEY")
-    
-if MAYTAPI_KEY == None:
-    logger.error("Could not find MAYTAPI_KEY env var.")
-    exit(1)
-
 
 def sendMsg(phone):
-    url = 'https://api.maytapi.com/api/1ece67a7-b614-442e-9fe7-5a7db00ffc09/32888/sendMessage'
+    url = settings.get("MAYTAPI_URL")
     payload = {
         "to_number": phone,
         "type": "text",
@@ -33,7 +23,7 @@ def sendMsg(phone):
     }
     headers = {
         "Content-Type": "application/json", 
-        "x-maytapi-key": MAYTAPI_KEY
+        "x-maytapi-key": settings.get("MAYTAPI_KEY")
     }
     response = requests.post(url, data=json.dumps(payload), headers=headers)   
     if response.status_code == 200:
@@ -72,7 +62,7 @@ async def webhook(  request: Request,
         logger.error(response.get('msg'))
         return JSONResponse(status_code=400,content=response)
 
-    sendMsg(phone)
+    # sendMsg(phone)
     
     response = {
         "msg": "Success",
