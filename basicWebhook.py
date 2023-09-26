@@ -42,7 +42,7 @@ def StartSession(phone):
     }
     try:
         response = requests.post(
-            url, data=json.dumps(payload), headers=headers, timeout=30
+            MAYTAPI_URL, data=json.dumps(payload), headers=headers, timeout=30
         )
     except requests.Timeout:
         logger.error("POST Request timeout after 30 seconds")
