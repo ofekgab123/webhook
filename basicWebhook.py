@@ -54,7 +54,7 @@ async def webhook(
         logger.error(response.get("msg"))
         return JSONResponse(status_code=400, content=response)
 
-    # sendMsg(phone)
+    sendMsg(phone)
 
     response = {"msg": "Success", "payload": phone, "status": 200}
     return JSONResponse(status_code=200, content=response)
