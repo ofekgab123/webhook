@@ -15,37 +15,43 @@ app.include_router(pingRoute)
 MAYTAPI_URL = settings.get("MAYTAPI_URL")
 MAYTAPI_KEY = settings.get("MAYTAPI_KEY")
 
+
 def StartSession(phone):
     openmsg = "שלום זאת העוזרת הטכנלוגית של מיכל כהן אשמח לעזור לך במה שתצטרכי"
     buttons = [
         {
             "id": "AnswerOpenMsg1",
-            "text":"לעולם הלייזר",
+            "text": "לעולם הלייזר",
         },
         {
             "id": "AnswerOpenMsg2",
-            "text":"לעולמות הקוסמטיקה",
+            "text": "לעולמות הקוסמטיקה",
         },
         {
             "id": "AnswerOpenMsg3",
-            "text":"למוצרים שלנו",
+            "text": "למוצרים שלנו",
         },
         {
             "id": "AnswerOpenMsg4",
-            "text":"אם לא הצלחתי לעזור לך ואת מעוניינת לדבר עם מיכל ",
-        }
+            "text": "אם לא הצלחתי לעזור לך ואת מעוניינת לדבר עם מיכל ",
+        },
     ]
-    payload = {"to_number": phone, "type": "buttons", "message": openmsg,"buttons": buttons}
+    payload = {
+        "to_number": phone,
+        "type": "buttons",
+        "message": openmsg,
+        "buttons": buttons,
+    }
     headers = {
         "Content-Type": "application/json",
         "x-maytapi-key": MAYTAPI_KEY,
     }
     try:
         response = requests.post(
-            MAYTAPI_URL, data=json.dumps(payload), headers=headers, timeout=30
+            MAYTAPI_URL, data=json.dumps(payload), headers=headers, timeout=200
         )
     except requests.Timeout:
-        logger.error("POST Request timeout after 30 seconds")
+        logger.error("POST Request timeout after 200 seconds")
         return
     except requests.ConnectionError:
         logger.error("POST Request connection error")
