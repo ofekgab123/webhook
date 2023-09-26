@@ -62,10 +62,10 @@ def StartSession(phone):
             )
     except requests.Timeout:
         logger.error("POST Request timeout after 200 seconds")
-        return JSONResponse(status_code=500, content="POST Request timeout after 200 seconds")
+        return JSONResponse(status_code=408, content="POST Request timeout after 200 seconds")
     except requests.ConnectionError:
         logger.error("POST Request connection error")
-        return JSONResponse(status_code=500, content="POST Request connection error")
+        return JSONResponse(status_code=503, content="POST Request connection error")
 
 @app.post("/webhook")
 async def webhook(
