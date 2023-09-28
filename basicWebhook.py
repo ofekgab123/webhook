@@ -17,6 +17,23 @@ MAYTAPI_KEY = settings.get("MAYTAPI_KEY")
 
 
 def StartSession(phone):
+    headers = {
+        "Content-Type": "application/json",
+        "x-maytapi-key": MAYTAPI_KEY,
+    }
+
+    response1 = requests.get(
+            MAYTAPI_URL+"/purgeQueue",  headers=headers, timeout=200
+    )
+    if   response1.status_code == 200:
+        logger.info("Clear successful")
+        logger.debug("Response:", response1)
+    else:
+        logger.error(
+            "Clear queue failed with status code:",
+            response1.status_code,
+            )
+            
     openmsg = "שלום זאת העוזרת הטכנלוגית של מיכל כהן אשמח לעזור לך במה שתצטרכי"
     buttons = [
         {
@@ -42,13 +59,10 @@ def StartSession(phone):
         "message": openmsg,
         "buttons": buttons,
     }
-    headers = {
-        "Content-Type": "application/json",
-        "x-maytapi-key": MAYTAPI_KEY,
-    }
+  
     try:
         response = requests.post(
-            MAYTAPI_URL, data=json.dumps(payload), headers=headers, timeout=200
+            MAYTAPI_URL+"/sendMessage", data=json.dumps(payload), headers=headers, timeout=200
         )
         if response.status_code == 200:
             logger.info("POST Request with JSON payload was successful")
